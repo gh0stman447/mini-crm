@@ -1,9 +1,18 @@
-<!-- BEGIN:nextjs-agent-rules -->
+# Mini-CRM Agent Guide
 
-## This is NOT the Next.js you know
+## Project Identity
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+A mini-CRM for a construction company. Next.js (App Router) + Supabase.
+Roles: Manager (Постановщик) and Worker (Исполнитель).
 
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+## Hard Rules (Security & Logic)
 
-<!-- END:nextjs-agent-rules -->
+1. **NEVER expose the Supabase `service_role` key.** Only use `NEXT_PUBLIC_SUPABASE_ANON_KEY` on the client. Server actions must use the standard SSR client, not the admin client, unless strictly required.
+2. **Row Level Security (RLS) is mandatory.** Every table (`objects`, `tasks`, `task_history`, `profiles`) MUST have RLS enabled. Workers must only see their own tasks.
+3. **Status transitions MUST be validated in the database.** Do not rely on UI hiding. Use the Postgres RPC function `transition_task_status`.
+4. **History is immutable.** The `task_history` table must not allow UPDATE or DELETE operations via the API. Only INSERT.
+5. **No public sign-ups.** Authentication is email/password via Supabase Auth, but registration is disabled.
+
+## Workflow
+
+Before writing any database migration or Supabase client code, read this file. After writing, verify the RLS policies are present.

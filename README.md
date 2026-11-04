@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BuildFlow mini-CRM
 
-## Getting Started
+Next.js App Router + Supabase CRM for construction objects and tasks.
 
-First, run the development server:
+## Setup
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+1. Create a Supabase project. In **Authentication → Providers → Email**, keep email/password enabled and disable new-user signups for production.
+2. Apply all SQL files in `supabase/migrations/` in filename order, using the Supabase SQL editor or CLI.
+3. Copy `.env.example` to `.env.local` and enter the project URL and **publishable** key. Never add a `service_role` key to this app.
+4. Create test users manually in Supabase Auth. New profiles default to `worker`; promote managers manually:
+
+```sql
+update public.profiles set role = 'manager' where id = '<auth-user-uuid>';
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Install and run:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm install
+pnpm dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Security model
 
-## Learn More
+- RLS is enabled on every application table.
+- Workers can only read assigned tasks, their objects, and task histories.
+- Authenticated clients cannot mutate tasks or status history directly.
+- The approved RPCs validate the actor, role, permitted transition, and required return comment; every transition appends history.
 
-To learn more about Next.js, take a look at the following resources:
+## Checks
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+pnpm lint
+pnpm build
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The build uses webpack because this environment prevents Turbopack's internal CSS helper from binding a local port.
