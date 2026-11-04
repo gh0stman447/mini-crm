@@ -1,5 +1,7 @@
 export function errorMessage(error: { message: string; code?: string }): string {
   const messages: Record<string, string> = {
+    'Assignee must have worker role': 'Задачу можно назначить только исполнителю.',
+    'Authentication required': 'Войдите в систему повторно.',
     'Invalid login credentials': 'Неверная электронная почта или пароль.',
     'Email not confirmed': 'Электронная почта не подтверждена.',
     'Only managers can create tasks': 'Создавать задачи может только постановщик.',
