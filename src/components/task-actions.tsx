@@ -36,16 +36,22 @@ export function TaskActions({
             { label: 'Вернуть на доработку', to: 'returned', needsComment: true },
           ]
         : [];
+
   if (!actions.length) return null;
+
   async function transition(action: Action) {
     if (action.needsComment && !comment.trim()) {
       setError('При возврате задачи укажите комментарий.');
       return;
     }
+
     setBusy(true);
     setError(null);
+
     const { error: rpcError } = await transitionTask(taskId, action.to, comment);
+
     setBusy(false);
+
     if (rpcError) {
       setError(rpcError);
       return;

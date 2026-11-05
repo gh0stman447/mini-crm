@@ -10,7 +10,10 @@ export default async function MyTasksPage() {
   if (!user) redirect('/login');
 
   const { data: profile, error: profileError } = await supabase
-    .from('profiles').select('role').eq('id', user.id).single();
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single();
   if (profileError) throw new Error('Не удалось загрузить ваш профиль.');
   if (profile?.role !== 'worker') redirect('/objects');
 

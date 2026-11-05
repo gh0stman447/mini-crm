@@ -11,19 +11,23 @@ export function LoginForm() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+
   async function submit(event: React.FormEvent) {
     event.preventDefault();
     setBusy(true);
     setError(null);
+
     const { error: signInError } = await createClient().auth.signInWithPassword({
       email,
       password,
     });
     setBusy(false);
+
     if (signInError) {
       setError(errorMessage(signInError));
       return;
     }
+
     router.replace('/objects');
     router.refresh();
   }

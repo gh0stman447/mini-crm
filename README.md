@@ -1,37 +1,42 @@
-# BuildFlow mini-CRM
+# BuildFlow — мини-CRM
 
-Next.js App Router + Supabase CRM for construction objects and tasks.
+Объекты строительства и задачи для постановщиков и исполнителей. Стек: Next.js, React, TypeScript, Supabase.
 
-## Setup
+## Запуск
 
-1. Create a Supabase project. In **Authentication → Providers → Email**, keep email/password enabled and disable new-user signups for production.
-2. Apply all SQL files in `supabase/migrations/` in filename order, using the Supabase SQL editor or CLI.
-3. Copy `.env.example` to `.env.local` and enter the project URL and **publishable** key. Never add a `service_role` key to this app.
-4. Create test users manually in Supabase Auth. New profiles default to `worker`; promote managers manually:
+Требуются Node.js 22+ и pnpm (версия указана в `package.json`). Все команды выполняются из папки проекта с `package.json`.
 
-```sql
-update public.profiles set role = 'manager' where id = '<auth-user-uuid>';
-```
+1. Создайте проект Supabase и примените SQL-файлы из `supabase/migrations/` по порядку имён. Для уже настроенной базы повторно применять миграции не нужно.
+2. Создайте в корне проекта файл `.env.local`:
 
-5. Install and run:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
+   ```
 
-```bash
-pnpm install
-pnpm dev
-```
+   Значения возьмите в настройках Supabase. Используйте публичный ключ, не `service_role`.
 
-## Security model
+3. В Supabase Auth включите вход по email/паролю, отключите открытую регистрацию и вручную создайте пользователей. Профили получают роль `worker`. Для постановщика выполните в SQL Editor:
 
-- RLS is enabled on every application table.
-- Workers can only read assigned tasks, their objects, and task histories.
-- Authenticated clients cannot mutate tasks or status history directly.
-- The approved RPCs validate the actor, role, permitted transition, and required return comment; every transition appends history.
+   ```sql
+   update public.profiles set role = 'manager' where id = '<ID пользователя из Auth>';
+   ```
 
-## Checks
+4. Установите зависимости и запустите приложение:
+
+   ```bash
+   pnpm install
+   pnpm dev
+   ```
+
+Откройте http://localhost:3000 и войдите под созданным пользователем.
+
+## Проверка и сборка
 
 ```bash
 pnpm lint
 pnpm build
+pnpm start
 ```
 
-The build uses webpack because this environment prevents Turbopack's internal CSS helper from binding a local port.
+Решения и допущения описаны в [DECISIONS.md](DECISIONS.md).

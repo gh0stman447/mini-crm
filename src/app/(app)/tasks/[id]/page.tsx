@@ -10,6 +10,7 @@ export default async function TaskPage({ params }: { params: Promise<{ id: strin
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
   if (!user) redirect('/login');
 
   const [{ data: task }, { data: profile }, { data: history, error: historyError }] =
@@ -40,6 +41,7 @@ export default async function TaskPage({ params }: { params: Promise<{ id: strin
 
   if (peopleError || objectError || workersError)
     throw new Error('Не удалось загрузить данные задачи.');
+
   const identities = new Map((people || []).map((person) => [person.id, person]));
 
   const personName = (personId: string, fallback: string) => {
