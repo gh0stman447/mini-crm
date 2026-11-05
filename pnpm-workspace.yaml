@@ -4,3 +4,9 @@ packages:
 allowBuilds:
   sharp: false
   unrs-resolver: false
+
+# Allow the dependencies blocked by the Netlify minimum-release-age check.
+minimumReleaseAgeExclude:
+  - '@supabase/*'
+  - '@babel/*'
+  - 'electron-to-chromium@1.5.476'
