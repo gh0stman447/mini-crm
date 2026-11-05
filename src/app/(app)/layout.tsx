@@ -26,9 +26,12 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           <Link href='/objects' className='font-bold tracking-tight'>
             BuildFlow <span className='font-normal text-slate-500'>CRM</span>
           </Link>
+
           <nav className='flex items-center gap-4 text-sm'>
             <Link href='/objects'>Объекты</Link>
+
             {profile?.role === 'worker' && <Link href='/my-tasks'>Мои задачи</Link>}
+
             <span className='hidden text-slate-500 sm:inline'>
               {profile?.full_name ||
                 (profile?.role === 'manager'
@@ -37,12 +40,14 @@ export default async function AppLayout({ children }: { children: React.ReactNod
                     ? 'Исполнитель'
                     : 'Пользователь')}
             </span>
+
             <form action={signOut}>
               <button className='text-slate-600 hover:text-slate-950'>Выйти</button>
             </form>
           </nav>
         </div>
       </header>
+
       <main className='mx-auto w-full max-w-6xl p-5 sm:p-8'>{children}</main>
     </>
   );

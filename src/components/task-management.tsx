@@ -32,6 +32,7 @@ export function TaskManagement({
         >
           {editing ? 'Отменить редактирование' : 'Редактировать задачу'}
         </button>
+
         <button
           className={`${button} text-rose-700`}
           aria-expanded={confirming}
@@ -44,6 +45,7 @@ export function TaskManagement({
           {confirming ? 'Отменить удаление' : 'Удалить задачу'}
         </button>
       </div>
+
       {editing && (
         <form
           className='mt-4 space-y-4'
@@ -58,6 +60,7 @@ export function TaskManagement({
             Название
             <input required name='title' defaultValue={task.title} className={field} />
           </label>
+
           <label className='block text-sm font-medium'>
             Описание
             <textarea
@@ -67,6 +70,7 @@ export function TaskManagement({
               className={field}
             />
           </label>
+
           <label className='block text-sm font-medium'>
             Исполнитель
             <select name='assigneeId' required defaultValue={task.assignee_id} className={field}>
@@ -77,9 +81,11 @@ export function TaskManagement({
               ))}
             </select>
           </label>
+
           <SubmitButton label='Сохранить изменения' pendingLabel='Сохранение…' />
         </form>
       )}
+
       {confirming && (
         <form
           className='mt-4 space-y-3'
@@ -93,9 +99,11 @@ export function TaskManagement({
             Удалить задачу «{task.title}»? Задача и её история будут удалены без возможности
             восстановления.
           </p>
+
           <SubmitButton label='Подтвердить удаление' pendingLabel='Удаление…' destructive />
         </form>
       )}
+
       {error && (
         <p role='alert' className='mt-3 text-sm text-rose-700'>
           {error}
@@ -115,6 +123,7 @@ function SubmitButton({
   destructive?: boolean;
 }) {
   const { pending } = useFormStatus();
+
   return (
     <button
       disabled={pending}

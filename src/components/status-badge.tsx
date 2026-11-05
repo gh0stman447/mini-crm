@@ -15,6 +15,7 @@ const styles: Record<TaskStatus, string> = {
   returned: 'bg-rose-100 text-rose-800',
 };
 export function StatusBadge({ status }: { status: TaskStatus }) {
+
   return (
     <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${styles[status]}`}>
       {labels[status]}

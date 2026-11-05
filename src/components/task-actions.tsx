@@ -1,4 +1,5 @@
 'use client';
+
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { transitionTask } from '@/app/actions';
@@ -19,6 +20,7 @@ export function TaskActions({
   const [comment, setComment] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+
   const actions: Action[] =
     isAssignee && status !== 'on_review'
       ? status === 'new'
@@ -51,9 +53,11 @@ export function TaskActions({
     setComment('');
     router.refresh();
   }
+
   return (
     <div className='mt-6 border-t border-slate-200 pt-5'>
       <p className='mb-2 text-sm font-medium text-slate-700'>Доступные действия</p>
+
       {actions.some((action) => action.needsComment) && (
         <textarea
           value={comment}
@@ -63,6 +67,7 @@ export function TaskActions({
           className='mb-3 min-h-20 w-full rounded-lg border border-slate-300 p-3 text-sm outline-none focus:border-blue-500'
         />
       )}
+
       <div className='flex flex-wrap gap-2'>
         {actions.map((action) => (
           <button
@@ -75,6 +80,7 @@ export function TaskActions({
           </button>
         ))}
       </div>
+
       {error && <p className='mt-3 text-sm text-rose-700'>{error}</p>}
     </div>
   );

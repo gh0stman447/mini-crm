@@ -12,6 +12,7 @@ export function ObjectActions({
   const [editing, setEditing] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
   const button =
     'rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium disabled:opacity-50';
   const field = 'mt-1 w-full rounded-lg border border-slate-300 px-3 py-2';
@@ -30,6 +31,7 @@ export function ObjectActions({
         >
           {editing ? 'Отменить редактирование' : 'Редактировать объект'}
         </button>
+
         <button
           className={`${button} text-rose-700`}
           aria-expanded={confirming}
@@ -42,6 +44,7 @@ export function ObjectActions({
           {confirming ? 'Отменить удаление' : 'Удалить объект'}
         </button>
       </div>
+
       {editing && (
         <form
           className='mt-4 space-y-4'
@@ -56,13 +59,16 @@ export function ObjectActions({
             Название
             <input required name='name' defaultValue={object.name} className={field} />
           </label>
+
           <label className='block text-sm font-medium'>
             Адрес
             <input required name='address' defaultValue={object.address} className={field} />
           </label>
+
           <SubmitButton label='Сохранить изменения' pendingLabel='Сохранение…' />
         </form>
       )}
+
       {confirming && (
         <form
           className='mt-4 space-y-3'
@@ -76,9 +82,11 @@ export function ObjectActions({
             Удалить объект «{object.name}»? Все его задачи и их история также будут удалены без
             возможности восстановления.
           </p>
+
           <SubmitButton label='Подтвердить удаление' pendingLabel='Удаление…' destructive />
         </form>
       )}
+
       {error && (
         <p role='alert' className='mt-3 text-sm text-rose-700'>
           {error}
@@ -98,6 +106,7 @@ function SubmitButton({
   destructive?: boolean;
 }) {
   const { pending } = useFormStatus();
+
   return (
     <button
       disabled={pending}

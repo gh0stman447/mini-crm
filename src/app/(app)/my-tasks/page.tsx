@@ -25,7 +25,9 @@ export default async function MyTasksPage() {
   return (
     <section>
       <h1 className='text-2xl font-bold'>Мои задачи</h1>
+
       <p className='mt-1 text-sm text-slate-600'>Задачи, назначенные вам.</p>
+
       <div className='mt-6 divide-y rounded-xl border border-slate-200 bg-white'>
         {tasks?.map((task) => (
           <Link
@@ -34,9 +36,11 @@ export default async function MyTasksPage() {
             className='flex items-center justify-between gap-3 p-4 hover:bg-slate-50'
           >
             <span className='font-medium'>{task.title}</span>
+
             <StatusBadge status={task.status} />
           </Link>
         ))}
+
         {!tasks?.length && <p className='p-5 text-sm text-slate-500'>У вас пока нет задач.</p>}
       </div>
     </section>
